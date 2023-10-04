@@ -26,8 +26,8 @@ jobs:
 
       - name: Create Profile
         run: |
-          bindplane profile create gitflow \
-            --remote-url https://app.bindplane.com
+          bindplane profile set gitflow \
+            --remote-url https://app.bindplane.com \
             --api-key ${{ secrets.BINDPLANE_API_KEY }}
           bindplane profile use gitflow
           bindplane version
