@@ -1,0 +1,29 @@
+name: BindPlane OP Deploy
+on:
+  push:
+    branches:
+      - main
+      - dev
+
+jobs:
+  shellcheck:
+    runs-on: "ubuntu-22.04"
+    steps:
+      - name: Check out source code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Install BindPlane CLI
+        run: |
+          curl -o bindplane.zip https://storage.googleapis.com/bindplane-op-releases/bindplane/bindplane-ee-v1.30.0-linux-amd64.zip
+          unzip bindplane.zip
+          sudo mv bindplane /usr/local/bin/bindplane
+      
+      - name: Create Profile
+        run: |
+          bindplane profile create gitflow \
+            --remote-url https://app.bindplane.com
+            --api-key ${{ secrets.BINDPLANE_API_KEY }}
+          bindplane profile use gitflow
+          bindplane version
