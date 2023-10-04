@@ -30,4 +30,9 @@ jobs:
             --remote-url https://app.bindplane.com \
             --api-key ${{ secrets.BINDPLANE_API_KEY }}
           bindplane profile use gitflow
-          bindplane version
+
+      - name: Test CLI
+        run: bindplane version
+
+      - name: Deploy Resources
+        run: bindplane apply -f resources.yaml
